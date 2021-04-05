@@ -20,9 +20,9 @@ let
     config = {
       _module.args.pkgs = import inputs.nixpkgs config.nixpkgs;
 
-      # This mimics eval-config.nix from nixpkgs.
+      # This permits the configuration to override the passed-in
+      # system.
       nixpkgs.system = lib.mkDefault system;
-      nixpkgs.initialSystem = system;
     };
   };
 

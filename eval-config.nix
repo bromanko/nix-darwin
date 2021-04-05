@@ -19,11 +19,14 @@ let
     _file = ./eval-config.nix;
     config = {
       _module.args.pkgs = import inputs.nixpkgs config.nixpkgs;
-      nixpkgs.system = system;
+
+      # This mimics eval-config.nix from nixpkgs.
+      nixpkgs.system = lib.mkDefault system;
+      nixpkgs.initialSystem = system;
     };
   };
 
-  eval = lib.evalModules (builtins.removeAttrs args [ "inputs" ] // {
+  eval = lib.evalModules (builtins.removeAttrs args [ "inputs" "system" ] // {
     modules = modules ++ [ inputsModule pkgsModule ] ++ baseModules;
     args = { inherit baseModules modules; };
     specialArgs = { modulesPath = builtins.toString ./modules; } // specialArgs;

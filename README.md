@@ -78,6 +78,7 @@ A minimal example of using an existing configuration.nix:
 
   outputs = { self, darwin, nixpkgs }: {
     darwinConfigurations."Johns-MacBook" = darwin.lib.darwinSystem {
+      system = "x86_64-darwin";
       modules = [ ./configuration.nix ];
     };
   };
@@ -89,6 +90,7 @@ accessible as an argument, similar to pkgs and lib inside the configuration.
 
 ```nix
 darwin.lib.darwinSystem {
+  system = "x86_64-darwin";
   modules = [ ... ];
   inputs = { inherit darwin dotfiles nixpkgs; };
 }

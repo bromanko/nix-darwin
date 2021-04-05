@@ -1,9 +1,10 @@
-{ lib, system ? builtins.currentSystem or "x86_64-darwin" }:
+{ lib }:
 
-{ modules
+{ system ? builtins.currentSystem or "x86_64-darwin"
+, modules
 , inputs
 , baseModules ? import ./modules/module-list.nix
-, specialArgs ? {}
+, specialArgs ? { }
 }@args:
 
 let
@@ -22,7 +23,7 @@ let
     };
   };
 
-  eval = lib.evalModules (builtins.removeAttrs args ["inputs"] // {
+  eval = lib.evalModules (builtins.removeAttrs args [ "inputs" ] // {
     modules = modules ++ [ inputsModule pkgsModule ] ++ baseModules;
     args = { inherit baseModules modules; };
     specialArgs = { modulesPath = builtins.toString ./modules; } // specialArgs;

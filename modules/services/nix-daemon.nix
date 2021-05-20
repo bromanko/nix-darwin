@@ -14,6 +14,13 @@ in
       description = "Whether to enable the nix-daemon service.";
     };
 
+    services.nix-daemon.package = mkOption {
+      type = types.package;
+      default = config.nix.package;
+      example = pkgs.nixUnstable;
+      description = "Specifies the Nix package used by the nix-daemon service.";
+    };
+
     services.nix-daemon.enableSocketListener = mkOption {
       type = types.bool;
       default = false;
@@ -46,7 +53,7 @@ in
     launchd.daemons.nix-daemon = {
       serviceConfig.ProgramArguments = [
         "/bin/sh" "-c"
-        "/bin/wait4path ${config.nix.package}/bin/nix-daemon &amp;&amp; exec ${config.nix.package}/bin/nix-daemon"
+        "/bin/wait4path ${cfg.package}/bin/nix-daemon &amp;&amp; exec ${cfg.package}/bin/nix-daemon"
       ];
       serviceConfig.ProcessType = mkDefault "Interactive";
       serviceConfig.LowPriorityIO = config.nix.daemonIONice;
